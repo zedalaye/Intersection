@@ -1,0 +1,9 @@
+
+*.dcu
+*.local
+*.dsk
+*.identcache
+*.otares
+*.ico
+*.exe
+*.dproj
