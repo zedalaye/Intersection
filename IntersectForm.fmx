@@ -1,0 +1,35 @@
+object MainIntersectForm: TMainIntersectForm
+  Left = 0
+  Top = 0
+  Caption = 'Intersection between a line and a convex polygon - '#169'2012 - PrY'
+  ClientHeight = 331
+  ClientWidth = 526
+  Visible = False
+  OnCreate = FormCreate
+  StyleLookup = 'backgroundstyle'
+  object pb1: TPaintBox
+    Align = alCenter
+    Position.Point = '(163,65)'
+    Width = 200.000000000000000000
+    Height = 200.000000000000000000
+    OnPaint = pb1Paint
+  end
+  object lbDT: TLabel
+    Position.Point = '(8,8)'
+    Width = 120.000000000000000000
+    Height = 15.000000000000000000
+    TabOrder = 1
+  end
+  object tmrComputeFPS: TTimer
+    Interval = 500
+    OnTimer = tmrComputeFPSTimer
+    Left = 197
+    Top = 16
+  end
+  object tmrDelayMorphing: TTimer
+    Interval = 2000
+    OnTimer = tmrDelayMorphingTimer
+    Left = 301
+    Top = 16
+  end
+end
