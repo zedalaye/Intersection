@@ -4,20 +4,24 @@ object MainIntersectForm: TMainIntersectForm
   Caption = 'Intersection between a line and a convex polygon - '#169'2012 - PrY'
   ClientHeight = 331
   ClientWidth = 526
-  Visible = False
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop, iPhone, iPad]
   OnCreate = FormCreate
-  StyleLookup = 'backgroundstyle'
+  DesignerMasterStyle = 0
   object pb1: TPaintBox
-    Align = alCenter
-    Position.Point = '(163,65)'
-    Width = 200.000000000000000000
-    Height = 200.000000000000000000
+    Align = Center
+    Size.Width = 200.000000000000000000
+    Size.Height = 200.000000000000000000
+    Size.PlatformDefault = False
     OnPaint = pb1Paint
   end
   object lbDT: TLabel
-    Position.Point = '(8,8)'
-    Width = 120.000000000000000000
-    Height = 15.000000000000000000
+    Position.X = 8.000000000000000000
+    Position.Y = 8.000000000000000000
+    Size.Width = 120.000000000000000000
+    Size.Height = 15.000000000000000000
+    Size.PlatformDefault = False
     TabOrder = 1
   end
   object tmrComputeFPS: TTimer

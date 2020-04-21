@@ -9,7 +9,9 @@ interface
 uses
   Winapi.Windows,
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
-  FMX.Types, FMX.Controls, FMX.Forms, FMX.Dialogs, FMX.Objects, FMX.Ani;
+  System.Generics.Collections, System.Math.Vectors,
+  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.StdCtrls,
+  FMX.Controls.Presentation, FMX.Objects, FMX.Ani;
 
 type
   TMainIntersectForm = class(TForm)
@@ -148,7 +150,7 @@ procedure TPolygonAnimation.SetControl(const Value: TControl);
 
   procedure RemoveClosePolygon(var P: TPolygon);
   begin
-    if (P[High(P)].X = ClosePolygon.X) and (P[High(P)].Y = ClosePolygon.Y) then
+    if (P[High(P)].X = PolygonPointBreak.X) and (P[High(P)].Y = PolygonPointBreak.Y) then
       P[High(P)] := P[0];
   end;
 
@@ -170,10 +172,10 @@ begin
   FControl := Value;
 
   { Corner generators }
-  Generators[1] := TCornerType.ctInnerLine;
-  Generators[2] := TCornerType.ctRound;
-  Generators[3] := TCornerType.ctInnerRound;
-  Generators[4] := TCornerType.ctBevel;
+  Generators[1] := TCornerType.InnerLine;
+  Generators[2] := TCornerType.Round;
+  Generators[3] := TCornerType.InnerRound;
+  Generators[4] := TCornerType.Bevel;
 
   { FControl is the PaintBox }
   R := FControl.LocalRect;
@@ -302,7 +304,7 @@ begin
   FAnimator := TPointAnimation.Create(Self);
   FAnimator.Parent := Self;
   FAnimator.Duration := 2;
-  FAnimator.Interpolation := TInterpolationType.itLinear;
+  FAnimator.Interpolation := TInterpolationType.Linear;
   TPointAnimation(FAnimator).Control := pb1;
   FAnimator.OnProcess := Process;
   FAnimator.Start;
@@ -311,7 +313,7 @@ begin
   FMorpher := TPolygonAnimation.Create(Self);
   FMorpher.Parent := Self;
   FMorpher.Duration := 4;
-  FMorpher.Interpolation := TInterpolationType.itLinear;
+  FMorpher.Interpolation := TInterpolationType.Linear;
   TPolygonAnimation(FMorpher).Control := pb1;
 end;
 
@@ -375,8 +377,8 @@ begin
   Shape := TPolygonAnimation(FMorpher).Shape;
   EndPoint := TPointAnimation(FAnimator).Point;
 
-  Canvas.StrokeThickness := 1;
-  Canvas.Stroke.Kind := TBrushKind.bkSolid;
+  Canvas.Stroke.Thickness := 1;
+  Canvas.Stroke.Kind := TBrushKind.Solid;
   Canvas.Stroke.Color := $A0909090;
 
   { Paintbox }
@@ -384,15 +386,15 @@ begin
 
   { Border }
   InflateRect(R, -0.5, -0.5);
-  Canvas.StrokeDash := TStrokeDash.sdDash;
+  Canvas.Stroke.Dash := TStrokeDash.Dash;
   Canvas.DrawRect(R, 0, 0, AllCorners, pb1.AbsoluteOpacity);
 
   InflateRect(R, -10, -10);
 
   { Draw the current polygon }
-  Canvas.StrokeThickness := 3;
-  Canvas.StrokeDash := TStrokeDash.sdSolid;
-  Canvas.Stroke.Kind := TBrushKind.bkSolid;
+  Canvas.Stroke.Thickness := 3;
+  Canvas.Stroke.Dash := TStrokeDash.Solid;
+  Canvas.Stroke.Kind := TBrushKind.Solid;
 
   Canvas.DrawPolygon(Shape, pb1.AbsoluteOpacity);
 
@@ -403,20 +405,20 @@ begin
 
   { A segment that moves around the shape from C (center) to EndPoint that
     is moved by TPointAnimation }
-  Canvas.StrokeThickness := 1;
-  Canvas.StrokeDash := TStrokeDash.sdDash;
+  Canvas.Stroke.Thickness := 1;
+  Canvas.Stroke.Dash := TStrokeDash.Dash;
   Canvas.DrawLine(C, EndPoint, pb1.AbsoluteOpacity);
 
-  Canvas.StrokeThickness := 3;
-  Canvas.StrokeDash := TStrokeDash.sdSolid;
-  Canvas.Stroke.Kind := TBrushKind.bkSolid;
+  Canvas.Stroke.Thickness := 3;
+  Canvas.Stroke.Dash := TStrokeDash.Solid;
+  Canvas.Stroke.Kind := TBrushKind.Solid;
 
   { Find the first intersection point between the moving segment and the
     current shape }
   for J := Low(Shape) to High(Shape) - 1 do
   begin
     K := J + 1;
-    if (Shape[K].X = ClosePolygon.X) and (Shape[K].Y = ClosePolygon.Y) then
+    if (Shape[K].X = PolygonPointBreak.X) and (Shape[K].Y = PolygonPointBreak.Y) then
       K := 0;
     if Intersect(C, EndPoint, Shape[J], Shape[K], I) then
     begin

@@ -1,4 +1,7 @@
 
+__history
+__recovery
+
 *.dcu
 *.local
 *.dsk
@@ -6,4 +9,6 @@
 *.otares
 *.ico
 *.exe
-*.dproj
+*.$manifest
+*.rsm
+*.vrc
